@@ -1,74 +1,61 @@
-import React, { useState } from 'react'
-import './App.css'
+import { useState } from 'react'
 
-function average(x: number) {
-  return Math.floor(x / 2) + 1
-}
+import '@/App.css'
 
-function averageRoll(text: string): number {
-  if (!text) return 0
-
-  const regexp = /\d+/g
-
-  const result = text.match(regexp)
-
-  if (!result) return 0
-
-  const [amount = 1, dice, mod = 0] = result.map(n => Number(n))
-
-  return amount * average(dice) + mod
-}
-
-function minMax(roll: string): [number, number] {
-  const regexp = /\d+/g
-
-  const result = roll.match(regexp)
-
-  if (!result) return [0, 0]
-
-  const [amount = 1, dice, mod = 0] = result.map(n => Number(n))
-
-  return [amount * 1 + mod, amount * dice + mod]
-}
+import DiceRoll from '@/components/DiceRoll'
+import Comparison from './components/Comparison'
 
 function App() {
-  const [avg, setAvg] = useState(0)
-  const [min, setMin] = useState(0)
-  const [max, setMax] = useState(0)
+  const [avg1, setAvg1] = useState(0)
+  const [min1, setMin1] = useState(0)
+  const [max1, setMax1] = useState(0)
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const tirada = event.target.value
+  const [avg2, setAvg2] = useState(0)
+  const [min2, setMin2] = useState(0)
+  const [max2, setMax2] = useState(0)
 
-    const avg = averageRoll(tirada)
-    const [min, max] = minMax(tirada)
-
-    setAvg(avg)
-    setMin(min)
-    setMax(max)
+  const form1 = (document.getElementById('firstRoll') as HTMLInputElement) ?? {
+    value: ''
+  }
+  const form2 = (document.getElementById('secondRoll') as HTMLInputElement) ?? {
+    value: ''
   }
 
   return (
-    <>
-      <div className='gap-2 grid grid-flow-col items-center'>
-        <label htmlFor='tirada' className='font-bold'>
-          Tirada:
-        </label>
-        <input
-          onChange={handleChange}
-          type='text'
-          autoComplete='off'
-          name='tirada'
-          id='tirada'
-          className='rounded-md p-1 my-8'
+    <main>
+      <section className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        <DiceRoll
+          name='firstRoll'
+          avg={avg1}
+          setAvg={setAvg1}
+          min={min1}
+          setMin={setMin1}
+          max={max1}
+          setMax={setMax1}
         />
-      </div>
-
-      <section>
-        <p>Mínimo: {min}</p>
-        <p>Promedio: {avg}</p>
-        <p>Máximo: {max}</p>
+        <DiceRoll
+          name='secondRoll'
+          avg={avg2}
+          setAvg={setAvg2}
+          min={min2}
+          setMin={setMin2}
+          max={max2}
+          setMax={setMax2}
+        />
       </section>
-    </>
+      <section className='mt-12'>
+        <Comparison
+          avg1={avg1}
+          min1={min1}
+          max1={max1}
+          avg2={avg2}
+          min2={min2}
+          max2={max2}
+          roll1={form1.value}
+          roll2={form2.value}
+        />
+      </section>
+    </main>
   )
 }
 
