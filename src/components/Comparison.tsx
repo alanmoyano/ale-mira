@@ -13,7 +13,7 @@ type ComparisonProps = {
 
 function message(percentage: number) {
   if (percentage < 100) return `es ${percentage}% menor que`
-  if (percentage > 100) return `es ${percentage}% mayor que`
+  if (percentage > 100) return `es ${percentage - 100}% mayor que`
   return 'es igual a'
 }
 
@@ -38,7 +38,7 @@ export default function Comparison({
       <h2>
         <u>Comparación</u>
       </h2>
-      
+
       <div>
         <article>
           <h3>
