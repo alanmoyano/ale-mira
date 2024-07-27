@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 
 function average(x: number) {
@@ -12,7 +12,7 @@ function averageRoll(text: string): number {
 
   const result = text.match(regexp)
 
-if(!result) return 0
+  if (!result) return 0
 
   const [amount = 1, dice, mod = 0] = result.map(n => Number(n))
 
@@ -24,7 +24,7 @@ function minMax(roll: string): [number, number] {
 
   const result = roll.match(regexp)
 
-if(!result) return [0,0]
+  if (!result) return [0, 0]
 
   const [amount = 1, dice, mod = 0] = result.map(n => Number(n))
 
@@ -36,12 +36,12 @@ function App() {
   const [min, setMin] = useState(0)
   const [max, setMax] = useState(0)
 
-  function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const tirada = event.target.value
 
     const avg = averageRoll(tirada)
     const [min, max] = minMax(tirada)
-    
+
     setAvg(avg)
     setMin(min)
     setMax(max)
@@ -49,19 +49,25 @@ function App() {
 
   return (
     <>
-    <input onChange={handleChange} type="text" name="tirada" id="tirada" />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <section>
-      <p>Mínimo: {min}</p>
-      <p>Promedio: {avg}</p>
-      <p>Máximo: {max}</p>
-    </section>
+      <div className='gap-2 grid grid-flow-col items-center'>
+        <label htmlFor='tirada' className='font-bold'>
+          Tirada:
+        </label>
+        <input
+          onChange={handleChange}
+          type='text'
+          autoComplete='off'
+          name='tirada'
+          id='tirada'
+          className='rounded-md p-1 my-8'
+        />
+      </div>
 
+      <section>
+        <p>Mínimo: {min}</p>
+        <p>Promedio: {avg}</p>
+        <p>Máximo: {max}</p>
+      </section>
     </>
   )
 }
